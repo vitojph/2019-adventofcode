@@ -35,10 +35,10 @@ func main() {
 
 	totalFuel := 0
 	masses := ReadInputMasses("input.txt")
+
 	for _, mass := range masses {
 		totalFuel += fuel.Fuel(mass)
 	}
 
 	fmt.Println("Total fuel:", totalFuel)
-
 }

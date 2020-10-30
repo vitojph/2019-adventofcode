@@ -13,10 +13,10 @@ func TestFuel(t *testing.T) {
 	if t2 != 2 {
 		t.Errorf("Fuel for 14: %d; want 2", t2)
 	}
-	if t3 != 654 {
-		t.Errorf("Fuel for 1969: %d; want 654", t3)
+	if t3 != 966 {
+		t.Errorf("Fuel for 1969: %d; want 966", t3)
 	}
-	if t4 != 33583 {
-		t.Errorf("Fuel for 100756: %d; want 33583", t4)
+	if t4 != 50346 {
+		t.Errorf("Fuel for 100756: %d; want 50346", t4)
 	}
 }
