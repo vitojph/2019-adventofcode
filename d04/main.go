@@ -22,20 +22,18 @@ func main() {
 	begining := 284639
 	end := 748759
 	possiblePasswords := make([]int, 0)
-	twoDigits := pcre.MustCompile(`(\d)\1`, 0)
-	//digitsNeverDecrease := pcre.MustCompile(`(\d)(\d)(\d)(\d)(\d)(\d)`, 0)
+	twoDigits := pcre.MustCompile(`(\d)?(\d)\2(\d)?`, 0)
 
 	for i := begining; i <= end; i++ {
 		candidate := strconv.Itoa(i)
 		m := twoDigits.MatcherString(candidate, 0)
-
-		if m.Matches() {
-			if int(candidate[0]) <= int(candidate[1]) && int(candidate[1]) <= int(candidate[2]) && int(candidate[2]) <= int(candidate[3]) && int(candidate[3]) <= int(candidate[4]) && int(candidate[4]) <= int(candidate[5]) {
+		if int(candidate[0]) <= int(candidate[1]) && int(candidate[1]) <= int(candidate[2]) && int(candidate[2]) <= int(candidate[3]) && int(candidate[3]) <= int(candidate[4]) && int(candidate[4]) <= int(candidate[5]) {
+			if m.GroupString(2) != m.GroupString(3) {
 				possiblePasswords = append(possiblePasswords, i)
 			}
 		}
-
 	}
+
 	fmt.Printf("I found %v possible passwords\n", len(possiblePasswords))
 	fmt.Printf("%v\n", possiblePasswords)
 }
