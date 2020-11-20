@@ -8,7 +8,25 @@ import (
 	"strings"
 )
 
-func totalOrbits(o orbits) int {
+// orbitMap contains an orbit map
+type orbitMap map[string]map[string]int
+
+// orbitsToCOM computes the number of indirect orbits
+// from a given planet to COM
+func (o orbitMap) orbitsToCOM(planet string) int {
+	total := 0
+	if planet != "COM" {
+		for k := range o[planet] {
+			total++
+			total += o.orbitsToCOM(k)
+		}
+	}
+	return total
+}
+
+// directOrbits returns the number of direct orbits
+// contained in an orbit map
+func (o orbitMap) directOrbits() int {
 	total := 0
 	// TODO: compute all the indirect orbits too
 	for _, v1 := range o {
@@ -19,9 +37,9 @@ func totalOrbits(o orbits) int {
 	return total
 }
 
-type orbits map[string]map[string]int
-
-func loadOrbits(fname string) orbits {
+// loadOrbits reads a file defining orbits
+// and returns an orbit map
+func loadOrbits(fname string) orbitMap {
 	orbits := make(map[string]map[string]int)
 
 	file, err := os.Open(fname)
@@ -57,9 +75,11 @@ func main() {
 	fmt.Println("Day 6")
 
 	orbits := loadOrbits("input.txt")
-	//log.Printf("%v", orbits)
-
-	n := totalOrbits(orbits)
-	fmt.Println("Total orbits:", n)
-
+	direct := orbits.directOrbits()
+	indirect := 0
+	for k := range orbits {
+		indirect += orbits.orbitsToCOM(k)
+	}
+	fmt.Println("Direct orbits:", direct)
+	fmt.Println("Total orbits:", indirect)
 }
